@@ -1,5 +1,2 @@
-src/
-extra/
-output/
-template/
+dist/
 __pycache__/
