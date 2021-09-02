@@ -5,10 +5,7 @@ import os
 import glob
 from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
-
-SRCDIR = './src'
-TMPLDIR = './template'
-DISTDIR = './dist'
+import conf
 
 
 def build(text):
@@ -29,7 +26,7 @@ def build(text):
     data['content'] = markdown.markdown(content[:-1])
     if 'template' not in data.keys():
         return data['content']
-    env = Environment(loader=FileSystemLoader(TMPLDIR))
+    env = Environment(loader=FileSystemLoader(conf.TMPLDIR))
     try:
         tmpl = env.get_template('{}.html'.format(data['template']))
     except TemplateNotFound:
@@ -39,12 +36,12 @@ def build(text):
 
 
 def main():
-    if os.path.isdir(DISTDIR):
-        shutil.rmtree(DISTDIR)
-    elif os.path.exists(DISTDIR):
-        os.remove(DISTDIR)
-    shutil.copytree(SRCDIR, DISTDIR)
-    mdl = glob.glob('{}/**/*.md'.format(DISTDIR), recursive=True)
+    if os.path.isdir(conf.DISTDIR):
+        shutil.rmtree(conf.DISTDIR)
+    elif os.path.exists(conf.DISTDIR):
+        os.remove(conf.DISTDIR)
+    shutil.copytree(conf.SRCDIR, conf.DISTDIR)
+    mdl = glob.glob('{}/**/*.md'.format(conf.DISTDIR), recursive=True)
     htl = []
     for mdpath in mdl:
         if os.path.isfile(mdpath):
